@@ -1,10 +1,8 @@
-<<<<<<< HEAD
 # Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
-=======
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -14,7 +12,6 @@ __pycache__/
 *.so
 
 # Distribution / packaging
->>>>>>> 663de9efafc6a247fef8bda6cdbfc3c55c868080
 .Python
 build/
 develop-eggs/
@@ -28,20 +25,15 @@ parts/
 sdist/
 var/
 wheels/
-<<<<<<< HEAD
 pip-wheel-metadata/
-=======
->>>>>>> 663de9efafc6a247fef8bda6cdbfc3c55c868080
 share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-<<<<<<< HEAD
 
 # Virtual Environment
 venv/
 env/
-=======
 MANIFEST
 
 # PyInstaller
@@ -158,12 +150,10 @@ celerybeat.pid
 .venv
 env/
 venv/
->>>>>>> 663de9efafc6a247fef8bda6cdbfc3c55c868080
 ENV/
 env.bak/
 venv.bak/
 
-<<<<<<< HEAD
 # IDEs
 .vscode/
 .idea/
@@ -233,7 +223,6 @@ yarn.lock
 tmp/
 temp/
 *.tmp
-=======
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -295,4 +284,3 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
->>>>>>> 663de9efafc6a247fef8bda6cdbfc3c55c868080
