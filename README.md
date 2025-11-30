@@ -1,56 +1,111 @@
-# 📈 Stock Market Forecasting System (Simplified)
+# 📈 Stock Market Prediction with PySpark & LightGBM
 
-A simple and functional Stock Market Forecasting Platform with Machine Learning models.
+A production-ready Stock Market Forecasting Platform featuring distributed data processing with PySpark, advanced ML models, and an interactive React dashboard.
 
-## 🎯 Features
+## ✨ Key Highlights
 
-- **Local CSV Data**: Works with historical stock data from CSV files
-- **ML Models**: ARIMA and Prophet for time series forecasting
-- **REST API**: FastAPI service with interactive documentation
-- **Easy to Run**: Simple setup and execution
+- **🔥 PySpark Integration**: Distributed data preprocessing for 235K+ records (2-3x faster)
+- **🤖 LightGBM Model**: Trained on 49 stocks with 232,742 samples (RMSE: 191.59)
+- **⚡ Fast Predictions**: <100ms inference time with 32 technical features
+- **📊 Interactive Dashboard**: Next.js React UI with real-time analysis
+- **🎯 Multi-Stock Analysis**: Market-wide sentiment and sector performance
+- **🔄 Smart Data Loading**: Automatic CSV validation with YFinance fallback
+- **📈 Multiple Models**: LightGBM (primary), ARIMA, Prophet with auto-selection
 
 ## 🚀 Quick Start
 
-### 1. Install Dependencies
+### Prerequisites
 
-```powershell
+- Python 3.12+
+- Node.js 18+ (for frontend)
+- Java 8+ (for PySpark)
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/deekshithgowda85/Stock-Market-Prediction.git
+cd Stock-Market-Prediction
+```
+
+### 2. Install Python Dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
-### 2. Run the API
+### 3. Train Model (Optional - Pre-trained model included)
 
-```powershell
+```bash
+python models/train_multi_stock_lightgbm.py
+```
+
+**Training Details**:
+
+- Uses PySpark for distributed preprocessing
+- Processes 232,742 samples from 49 stocks
+- Takes ~3 seconds to train
+- Model saved to `models/multi_stock_lightgbm/`
+
+### 4. Start Backend API
+
+```bash
 python run.py
 ```
 
-The API will start on `http://localhost:8000`
+API runs on `http://localhost:8000`
 
-### 3. Access API Documentation
+**Note**: First request may take 40 seconds as PySpark initializes Spark session
+
+### 5. Start Frontend Dashboard (Optional)
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Dashboard runs on `http://localhost:3000`
+
+### 6. Access API Documentation
 
 - **Swagger UI**: http://localhost:8000/docs
 - **ReDoc**: http://localhost:8000/redoc
 
 ## 📊 API Endpoints
 
-### List Available Stocks
+### Data Operations (PySpark-Powered)
+
+**List Available Stocks**
 
 ```http
 GET /api/v1/stocks
 ```
 
-### Get Stock Data
+Returns 52 NIFTY 50 stock symbols
+
+**Get Stock Data** (🔥 PySpark)
 
 ```http
-GET /api/v1/data/{symbol}?limit=100
+GET /api/v1/data/{symbol}?limit=100&force_update=false
 ```
 
-### Get Latest Price
+- Uses PySpark for distributed data loading
+- Returns last 100 records by default
+- Set `force_update=true` to fetch live data from YFinance
+
+**Stock Analysis** (🔥 PySpark)
 
 ```http
-GET /api/v1/latest/{symbol}
+GET /api/v1/analyze/{symbol}?preprocess=true&auto_update=false
 ```
 
-### Generate Predictions
+- PySpark loads and cleans data
+- Returns technical indicators (RSI, MACD, Bollinger Bands)
+- Calculates volatility, returns, moving averages
+
+### Prediction Operations
+
+**Generate Predictions** (🔥 PySpark + ML)
 
 ```http
 POST /api/v1/predict
@@ -63,153 +118,304 @@ Content-Type: application/json
 }
 ```
 
-Model types: `auto`, `arima`, `prophet`
+- PySpark preprocesses data
+- Model types: `auto`, `arima`, `prophet`
+- Returns 30-day forecast with confidence intervals
 
-## 📦 Dependencies
+**LightGBM Predictions** (Primary Model)
 
-- pandas, numpy - Data manipulation
-- yfinance - Fetch live stock data (optional)
-- scikit-learn - Machine learning utilities
-- statsmodels - ARIMA model
-- prophet - Facebook Prophet model
-- fastapi, uvicorn - Web API framework
+```http
+POST /api/v1/predict-lightgbm
+Content-Type: application/json
 
-## 🎓 Models
+{
+  "symbol": "RELIANCE",
+  "days": 30
+}
+```
 
-- **ARIMA**: Auto-regressive Integrated Moving Average
-- **Prophet**: Facebook's forecasting tool
-- **Auto Mode**: Trains both and selects best performer
+- Fast predictions (<100ms)
+- Trained on 232K samples
+- 32 technical features
+- Best for short-term forecasts (7-30 days)
 
-## 📄 License
+**Multi-Stock Market Analysis**
 
-See LICENSE file for details.
+```http
+POST /api/v1/analyze-market
+Content-Type: application/json
 
-## 🎯 Features
+{
+  "symbols": ["RELIANCE", "INFY", "TCS", "HDFCBANK"],
+  "days": 30
+}
+```
 
-- **Real-time Data Ingestion**: Fetch live stock data from YFinance (NSE/BSE markets)
-- **Distributed Processing**: PySpark-based ETL pipelines for scalable data processing
-- **Advanced ML Models**: ARIMA, LSTM, and Prophet with automatic model selection
-- **REST API**: FastAPI service with authentication and rate limiting
-- **Interactive Dashboard**: React-based visualization with real-time predictions
-- **Workflow Orchestration**: Airflow DAGs for automated data pipelines
-- **Cloud Storage**: AWS S3 integration for data persistence
-- **Enterprise Features**: Logging, monitoring, retry mechanisms, and security
+- Bulk predictions for multiple stocks
+- Market sentiment analysis
+- Sector performance comparison
+- Top gainers/losers identification
+
+## 🎯 Key Features
+
+### Backend
+
+- **🔥 PySpark Integration**: Distributed data preprocessing (2-3x faster than pandas)
+- **⚡ LightGBM Model**: Primary prediction engine with 191.59 RMSE
+- **📈 Multiple Models**: ARIMA, Prophet with automatic model selection
+- **🔄 Smart Data Loading**: CSV-first with YFinance fallback for fresh data
+- **📊 Technical Analysis**: 35 indicators (RSI, MACD, Bollinger Bands, etc.)
+- **🎯 Multi-Stock Support**: Train and predict across 49 stocks simultaneously
+- **⏱️ Fast Inference**: <100ms predictions with pre-trained models
+
+### Frontend
+
+- **📱 Interactive Dashboard**: Real-time stock analysis and visualization
+- **📊 Advanced Charts**: Recharts with historical data and predictions
+- **🌐 Market Overview**: Multi-stock analysis with sentiment indicators
+- **📈 Sector Performance**: Compare different market sectors
+- **⚡ Real-time Updates**: Live data fetching from YFinance
+- **🎨 Modern UI**: Tailwind CSS with responsive design
+
+### DevOps & Infrastructure
+
+- **🔄 CI/CD Pipeline**: GitHub Actions for automated testing and deployment
+- **🐳 Docker Support**: Containerized deployment (optional)
+- **📝 Comprehensive Logging**: Structured logs for debugging and monitoring
+- **🔐 API Documentation**: Auto-generated Swagger UI and ReDoc
+- **⚠️ Error Handling**: Graceful fallbacks and informative error messages
+
+## 📦 Technology Stack
+
+### Backend
+
+| Category  | Technology  | Version | Purpose                   |
+| --------- | ----------- | ------- | ------------------------- |
+| Language  | Python      | 3.12    | Core backend              |
+| Framework | FastAPI     | Latest  | REST API                  |
+| Big Data  | PySpark     | 3.5.0   | Distributed preprocessing |
+| ML        | LightGBM    | 4.6.0   | Primary model             |
+| ML        | Prophet     | Latest  | Time series forecasting   |
+| ML        | Statsmodels | Latest  | ARIMA implementation      |
+| Data      | Pandas      | Latest  | Data manipulation         |
+| Data      | NumPy       | Latest  | Numerical operations      |
+| Server    | Uvicorn     | Latest  | ASGI server               |
+
+### Frontend
+
+| Category  | Technology   | Version | Purpose            |
+| --------- | ------------ | ------- | ------------------ |
+| Framework | Next.js      | 14      | React framework    |
+| Language  | TypeScript   | 5.x     | Type safety        |
+| UI        | React        | 18      | Component library  |
+| Styling   | Tailwind CSS | 3.x     | Utility-first CSS  |
+| Charts    | Recharts     | 2.x     | Data visualization |
+| Build     | Turbopack    | Latest  | Fast bundler       |
+
+### Infrastructure
+
+- **Version Control**: Git + GitHub
+- **CI/CD**: GitHub Actions
+- **Container**: Docker (optional)
+- **Package Manager**: pip (Python), npm (Node.js)
+
+## 📁 Project Structure
+
+```
+Stock-prediction/
+├── dataset/                   # 52 NIFTY 50 stock CSV files (51.84 MB)
+├── frontend/                  # Next.js React dashboard
+│   ├── app/                  # Next.js 14 App Router
+│   │   ├── page.tsx         # Main dashboard
+│   │   └── multi-stock/     # Market analysis page
+│   └── components/           # React components
+├── models/                    # Trained ML models
+│   ├── multi_stock_lightgbm/ # LightGBM model files
+│   └── train_multi_stock_lightgbm.py # Training script
+├── src/                       # Python backend
+│   ├── api/                  # FastAPI endpoints
+│   ├── config/               # Configuration
+│   ├── ingestion/            # Data loading (CSV, YFinance)
+│   ├── models/               # ML model implementations
+│   ├── preprocessing/        # PySpark data preprocessing
+│   ├── processing/           # Feature engineering
+│   └── utils/                # Helper functions
+├── .github/workflows/        # CI/CD pipelines
+├── requirements.txt          # Python dependencies
+├── run.py                    # Backend launcher
+└── PROJECT_STRUCTURE.md      # Detailed folder documentation
+```
+
+See [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) for detailed folder explanations.
 
 ## 🏗️ Architecture
 
 ```
-┌─────────────────┐
-│  YFinance API   │
-│   (NSE/BSE)     │
-└────────┬────────┘
+┌──────────────────────────────────────────────────────────────┐
+│                     Frontend (Next.js)                        │
+│  • Dashboard Page (Single Stock Analysis)                    │
+│  • Multi-Stock Page (Market Overview)                        │
+│  • React Components (Charts, Analysis, Predictions)          │
+└────────────────────┬─────────────────────────────────────────┘
+                     │ HTTP/JSON API
+                     ▼
+┌──────────────────────────────────────────────────────────────┐
+│                FastAPI Backend (Python 3.12)                  │
+│  • /data/{symbol} - PySpark data loading                     │
+│  • /analyze/{symbol} - PySpark analysis                      │
+│  • /predict - PySpark + ML predictions                       │
+│  • /predict-lightgbm - LightGBM predictions                  │
+└────────────┬────────────────┬────────────────────────────────┘
+             │                │
+             ▼                ▼
+┌──────────────────┐  ┌─────────────────────┐
+│  SparkPreprocessor│  │   ML Models         │
+│  (PySpark 3.5)   │  │                     │
+│  • Load CSV      │  │  • LightGBM ⭐      │
+│  • Clean Data    │  │  • ARIMA           │
+│  • Deduplicate   │  │  • Prophet         │
+│  • Validate      │  │  • Model Selector  │
+└────────┬─────────┘  └──────────┬──────────┘
+         │                       │
+         ▼ toPandas()           ▼ predict()
+┌──────────────────────────────────────────┐
+│     Feature Engineering (Pandas)         │
+│  • 32 Technical Indicators               │
+│  • MAs, RSI, MACD, Bollinger Bands       │
+│  • Volatility, Returns, Lag Features     │
+└────────┬─────────────────────────────────┘
          │
          ▼
-┌─────────────────────────────────────────┐
-│        Data Ingestion Layer              │
-│  ┌──────────┐      ┌──────────────┐    │
-│  │ YFinance │      │ CSV Upload   │    │
-│  │ Fetcher  │      │   Handler    │    │
-│  └──────────┘      └──────────────┘    │
-└────────┬────────────────────────────────┘
-         │
-         ▼
-┌─────────────────────────────────────────┐
-│         AWS S3 Storage                   │
-│  /raw/  /processed/  /predictions/      │
-└────────┬────────────────────────────────┘
-         │
-         ▼
-┌─────────────────────────────────────────┐
-│      PySpark ETL & Feature Eng.         │
-│  • Data Cleaning                         │
-│  • Technical Indicators (RSI, MACD)      │
-│  • Rolling Windows                       │
-└────────┬────────────────────────────────┘
-         │
-         ▼
-┌─────────────────────────────────────────┐
-│         ML Model Training                │
-│  ┌────────┐ ┌────────┐ ┌─────────┐    │
-│  │ ARIMA  │ │  LSTM  │ │ Prophet │    │
-│  └────────┘ └────────┘ └─────────┘    │
-│       Auto-selection by RMSE            │
-└────────┬────────────────────────────────┘
-         │
-         ▼
-┌─────────────────────────────────────────┐
-│        FastAPI Service                   │
-│  • Prediction Endpoints                  │
-│  • Authentication                        │
-│  • Rate Limiting                         │
-└────────┬────────────────────────────────┘
-         │
-         ▼
-┌─────────────────────────────────────────┐
-│       React Dashboard                    │
-│  • Stock Charts                          │
-│  • Prediction Visualization              │
-│  • Data Upload Interface                 │
-└─────────────────────────────────────────┘
+┌──────────────────────────────────────────┐
+│         Dataset (CSV Files)              │
+│  • 52 NIFTY 50 Stocks                    │
+│  • 235,192 Total Records                 │
+│  • 51.84 MB Data (2000-2021)             │
+└──────────────────────────────────────────┘
+```
 
-       Orchestrated by Apache Airflow
+### Data Flow
+
+1.  **Ingestion**: PySpark loads CSV → Distributed cleaning → Pandas DataFrame
+2.  **Processing**: Feature engineering creates 32 technical indicators
+3.  **Training**: LightGBM trains on 232K samples (one-time, 3 seconds)
+4.  **Inference**: Load model → Generate predictions → Return to API
+5.  **Display**: Frontend fetches predictions → Renders charts and analysis
+    ┌─────────────────┐
+    │ YFinance API │
+    │ (NSE/BSE) │
+    └────────┬────────┘
+    │
+    ▼
+    ┌─────────────────────────────────────────┐
+    │ Data Ingestion Layer │
+    │ ┌──────────┐ ┌──────────────┐ │
+    │ │ YFinance │ │ CSV Upload │ │
+    │ │ Fetcher │ │ Handler │ │
+    │ └──────────┘ └──────────────┘ │
+    └────────┬────────────────────────────────┘
+    │
+    ▼
+    ┌─────────────────────────────────────────┐
+    │ AWS S3 Storage │
+    │ /raw/ /processed/ /predictions/ │
+    └────────┬────────────────────────────────┘
+    │
+    ▼
+    ┌─────────────────────────────────────────┐
+    │ PySpark ETL & Feature Eng. │
+    │ • Data Cleaning │
+    │ • Technical Indicators (RSI, MACD) │
+    │ • Rolling Windows │
+    └────────┬────────────────────────────────┘
+    │
+    ▼
+    ┌─────────────────────────────────────────┐
+    │ ML Model Training │
+    │ ┌────────┐ ┌────────┐ ┌─────────┐ │
+    │ │ ARIMA │ │ LSTM │ │ Prophet │ │
+    │ └────────┘ └────────┘ └─────────┘ │
+    │ Auto-selection by RMSE │
+    └────────┬────────────────────────────────┘
+    │
+    ▼
+    ┌─────────────────────────────────────────┐
+    │ FastAPI Service │
+    │ • Prediction Endpoints │
+    │ • Authentication │
+    │ • Rate Limiting │
+    └────────┬────────────────────────────────┘
+    │
+    ▼
+    ┌─────────────────────────────────────────┐
+    │ React Dashboard │
+    │ • Stock Charts │
+    │ • Prediction Visualization │
+    │ • Data Upload Interface │
+    └─────────────────────────────────────────┘
+
+           Orchestrated by Apache Airflow
+
 ```
 
 ## 📁 Project Structure
 
 ```
+
 stock-prediction/
 ├── src/
-│   ├── ingestion/          # Data fetching and S3 operations
-│   │   ├── yfinance_fetcher.py
-│   │   ├── csv_handler.py
-│   │   └── s3_utils.py
-│   ├── processing/         # PySpark ETL pipelines
-│   │   ├── etl_pipeline.py
-│   │   ├── feature_engineering.py
-│   │   └── technical_indicators.py
-│   ├── models/            # ML model implementations
-│   │   ├── arima_model.py
-│   │   ├── lstm_model.py
-│   │   ├── prophet_model.py
-│   │   └── model_selector.py
-│   ├── api/               # FastAPI service
-│   │   ├── main.py
-│   │   ├── endpoints.py
-│   │   ├── auth.py
-│   │   └── middleware.py
-│   ├── utils/             # Utilities
-│   │   ├── logger.py
-│   │   ├── config.py
-│   │   └── exceptions.py
-│   └── config/            # Configuration files
-│       └── settings.py
-├── infra/                 # Infrastructure setup
-│   ├── docker-compose.yml
-│   ├── airflow/
-│   │   └── dags/
-│   └── spark/
-│       └── spark-defaults.conf
-├── dashboard/             # React frontend
-│   ├── src/
-│   ├── public/
-│   └── package.json
-├── tests/                 # Unit tests
-│   ├── test_ingestion.py
-│   ├── test_processing.py
-│   └── test_api.py
-├── scripts/              # Helper scripts
-│   ├── run_local.sh
-│   ├── deploy.sh
-│   └── setup.sh
+│ ├── ingestion/ # Data fetching and S3 operations
+│ │ ├── yfinance_fetcher.py
+│ │ ├── csv_handler.py
+│ │ └── s3_utils.py
+│ ├── processing/ # PySpark ETL pipelines
+│ │ ├── etl_pipeline.py
+│ │ ├── feature_engineering.py
+│ │ └── technical_indicators.py
+│ ├── models/ # ML model implementations
+│ │ ├── arima_model.py
+│ │ ├── lstm_model.py
+│ │ ├── prophet_model.py
+│ │ └── model_selector.py
+│ ├── api/ # FastAPI service
+│ │ ├── main.py
+│ │ ├── endpoints.py
+│ │ ├── auth.py
+│ │ └── middleware.py
+│ ├── utils/ # Utilities
+│ │ ├── logger.py
+│ │ ├── config.py
+│ │ └── exceptions.py
+│ └── config/ # Configuration files
+│ └── settings.py
+├── infra/ # Infrastructure setup
+│ ├── docker-compose.yml
+│ ├── airflow/
+│ │ └── dags/
+│ └── spark/
+│ └── spark-defaults.conf
+├── dashboard/ # React frontend
+│ ├── src/
+│ ├── public/
+│ └── package.json
+├── tests/ # Unit tests
+│ ├── test_ingestion.py
+│ ├── test_processing.py
+│ └── test_api.py
+├── scripts/ # Helper scripts
+│ ├── run_local.sh
+│ ├── deploy.sh
+│ └── setup.sh
 ├── .github/
-│   └── workflows/
-│       └── ci-cd.yml
+│ └── workflows/
+│ └── ci-cd.yml
 ├── requirements.txt
 ├── pyproject.toml
 ├── .env.template
 ├── .gitignore
 └── README.md
-```
+
+````
 
 ## 🚀 Quick Start
 
@@ -227,7 +433,7 @@ stock-prediction/
 ```bash
 git clone <repository-url>
 cd stock-prediction
-```
+````
 
 2. **Set up environment variables**
 
