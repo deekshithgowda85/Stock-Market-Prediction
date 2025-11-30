@@ -185,6 +185,7 @@ models/saved/
 
 # Spark
 spark-warehouse/
+spark_output/
 metastore_db/
 derby.log
 

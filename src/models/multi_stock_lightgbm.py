@@ -118,60 +118,97 @@ class MultiStockLightGBM:
         rsi = 100 - (100 / (1 + rs))
         return rsi
     
-    def prepare_data(self, dataset_path: Path) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    def prepare_data(self, dataset_path: Path, use_spark: bool = True) -> Tuple[pd.DataFrame, pd.DataFrame]:
         """
-        Load and prepare all stock data
+        Load and prepare all stock data with optional PySpark preprocessing
         
         Args:
             dataset_path: Path to dataset folder
+            use_spark: Use PySpark for distributed preprocessing (default: True)
             
         Returns:
             Tuple of (features_df, targets_df)
         """
         logger.info("Loading all stock datasets...")
         
-        all_features = []
-        csv_files = list(dataset_path.glob("*.csv"))
-        logger.info(f"Found {len(csv_files)} stock files")
-        
-        for csv_file in csv_files:
-            symbol = csv_file.stem
-            
-            # Skip metadata and NIFTY50_all (too large)
-            if symbol in ['stock_metadata', 'NIFTY50_all']:
-                continue
-            
+        if use_spark:
+            # Use PySpark for distributed data loading and cleaning
             try:
-                df = pd.read_csv(csv_file)
+                from src.preprocessing.spark_loader import SparkPreprocessor
+                logger.info("🔥 Using PySpark for data preprocessing...")
                 
-                # Normalize column names to lowercase
-                df.columns = df.columns.str.lower()
+                preprocessor = SparkPreprocessor()
                 
-                # Check required columns
-                required_cols = ['date', 'open', 'high', 'low', 'close', 'volume']
-                if not all(col in df.columns for col in required_cols):
-                    logger.warning(f"Skipping {symbol}: missing required columns")
-                    continue
+                # Load all stocks with PySpark (faster, more memory efficient)
+                all_data = preprocessor.load_and_clean_stocks(str(dataset_path))
                 
-                # Clean data
-                df = df.dropna(subset=required_cols)
+                logger.info(f"PySpark loaded {len(all_data):,} total records")
                 
-                if len(df) < self.lookback + 50:
-                    logger.warning(f"Skipping {symbol}: insufficient data ({len(df)} rows)")
-                    continue
+                # Process each symbol
+                all_features = []
+                for symbol in all_data['symbol'].unique():
+                    df = all_data[all_data['symbol'] == symbol].copy()
+                    
+                    if len(df) < self.lookback + 50:
+                        logger.warning(f"Skipping {symbol}: insufficient data ({len(df)} rows)")
+                        continue
+                    
+                    # Create features
+                    features = self.create_features(df, symbol)
+                    all_features.append(features)
+                    logger.info(f"Processed {symbol}: {len(df)} rows")
                 
-                # Create features
-                features = self.create_features(df, symbol)
-                all_features.append(features)
-                
-                logger.info(f"Loaded {symbol}: {len(df)} rows")
+                # Combine all stocks
+                combined_df = pd.concat(all_features, ignore_index=True)
                 
             except Exception as e:
-                logger.error(f"Error loading {symbol}: {e}")
-                continue
+                logger.warning(f"PySpark preprocessing failed: {e}. Falling back to pandas...")
+                use_spark = False
         
-        # Combine all stocks
-        combined_df = pd.concat(all_features, ignore_index=True)
+        if not use_spark:
+            # Fallback to pandas-based loading
+            all_features = []
+            csv_files = list(dataset_path.glob("*.csv"))
+            logger.info(f"Found {len(csv_files)} stock files")
+            
+            for csv_file in csv_files:
+                symbol = csv_file.stem
+                
+                # Skip metadata and NIFTY50_all
+                if symbol in ['stock_metadata', 'NIFTY50_all']:
+                    continue
+                
+                try:
+                    df = pd.read_csv(csv_file)
+                    
+                    # Normalize column names to lowercase
+                    df.columns = df.columns.str.lower()
+                    
+                    # Check required columns
+                    required_cols = ['date', 'open', 'high', 'low', 'close', 'volume']
+                    if not all(col in df.columns for col in required_cols):
+                        logger.warning(f"Skipping {symbol}: missing required columns")
+                        continue
+                    
+                    # Clean data
+                    df = df.dropna(subset=required_cols)
+                    
+                    if len(df) < self.lookback + 50:
+                        logger.warning(f"Skipping {symbol}: insufficient data ({len(df)} rows)")
+                        continue
+                    
+                    # Create features
+                    features = self.create_features(df, symbol)
+                    all_features.append(features)
+                    
+                    logger.info(f"Loaded {symbol}: {len(df)} rows")
+                    
+                except Exception as e:
+                    logger.error(f"Error loading {symbol}: {e}")
+                    continue
+            
+            # Combine all stocks
+            combined_df = pd.concat(all_features, ignore_index=True)
         
         # Drop rows with NaN (from feature engineering)
         combined_df = combined_df.dropna()

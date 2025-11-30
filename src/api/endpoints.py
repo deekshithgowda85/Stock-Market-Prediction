@@ -112,7 +112,7 @@ async def get_stock_data(
     force_update: bool = Query(False, description="Force fetch from YFinance (Fetch Live Data button)")
 ):
     """
-    Get historical stock data.
+    Get historical stock data using PySpark for distributed preprocessing.
     Default: Load from CSV (fast, reliable)
     With force_update=True: Try YFinance update, fallback to CSV if fails
 
@@ -125,16 +125,19 @@ async def get_stock_data(
         Historical data from CSV (with optional YFinance updates)
     """
     try:
-        logger.info(f"Loading data for {symbol} (force_update={force_update})")
+        logger.info(f"🔥 Loading data for {symbol} with PySpark (force_update={force_update})")
         
-        # ALWAYS load CSV first (reliable historical data)
+        # Use PySpark for data loading and cleaning
+        from src.preprocessing.spark_loader import SparkPreprocessor
+        
         csv_path = Path(settings.dataset_path) / f"{symbol}.csv"
         if not csv_path.exists():
             raise HTTPException(status_code=404, detail=f"No CSV data found for {symbol}")
         
-        df = pd.read_csv(csv_path)
-        df = csv_handler.validate_csv(df)
-        data_source = "CSV historical data"
+        # Load with PySpark distributed processing
+        spark_processor = SparkPreprocessor()
+        df = spark_processor.load_single_stock(str(csv_path), symbol)
+        data_source = "PySpark distributed loading from CSV"
         
         # If force_update requested, try YFinance update (may fail - that's OK)
         if force_update:
@@ -179,7 +182,7 @@ async def get_stock_data(
 @router.post("/predict")
 async def predict_stock(request: PredictionRequest):
     """
-    Generate stock price predictions with full preprocessing pipeline.
+    Generate stock price predictions with PySpark distributed preprocessing.
     Uses smart loader to ensure fresh data.
 
     Args:
@@ -189,15 +192,18 @@ async def predict_stock(request: PredictionRequest):
         Predictions with preprocessing metadata
     """
     try:
-        logger.info(f"Generating {request.days}-day forecast for {request.symbol}")
+        logger.info(f"🔥 Generating {request.days}-day forecast for {request.symbol} with PySpark")
         
-        # Load from CSV first (fast and reliable)
+        # Use PySpark for distributed data loading
+        from src.preprocessing.spark_loader import SparkPreprocessor
+        
         csv_path = Path(settings.dataset_path) / f"{request.symbol}.csv"
         if not csv_path.exists():
             raise HTTPException(status_code=404, detail=f"No CSV data found for {request.symbol}")
         
-        df = pd.read_csv(csv_path)
-        df = csv_handler.validate_csv(df)
+        # Load with PySpark distributed processing
+        spark_processor = SparkPreprocessor()
+        df = spark_processor.load_single_stock(str(csv_path), request.symbol)
         logger.info(f"Loaded {len(df)} records from CSV")
         
         if df is None or len(df) == 0:
@@ -399,7 +405,7 @@ async def analyze_stock(
     auto_update: bool = Query(False, description="Try to update from YFinance (normally off)")
 ):
     """
-    Get comprehensive analysis.
+    Get comprehensive analysis using PySpark for distributed preprocessing.
     Default: Use CSV data (fast)
     With auto_update=True: Try YFinance update, fallback to CSV if fails
 
@@ -412,16 +418,19 @@ async def analyze_stock(
         Analysis including statistics, trends, and indicators
     """
     try:
-        logger.info(f"Analyzing {symbol} (auto_update={auto_update}, preprocess={preprocess})")
+        logger.info(f"🔥 Analyzing {symbol} with PySpark (auto_update={auto_update}, preprocess={preprocess})")
         
-        # ALWAYS load CSV first (fast and reliable)
+        # Use PySpark for distributed data loading and cleaning
+        from src.preprocessing.spark_loader import SparkPreprocessor
+        
         csv_path = Path(settings.dataset_path) / f"{symbol}.csv"
         if not csv_path.exists():
             raise HTTPException(status_code=404, detail=f"No CSV data found for {symbol}")
         
-        df = pd.read_csv(csv_path)
-        df = csv_handler.validate_csv(df)
-        data_source = "CSV historical data"
+        # Load with PySpark
+        spark_processor = SparkPreprocessor()
+        df = spark_processor.load_single_stock(str(csv_path), symbol)
+        data_source = "PySpark distributed processing from CSV"
         
         # Only try YFinance if explicitly requested
         if auto_update:
