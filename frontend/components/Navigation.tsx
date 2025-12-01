@@ -7,33 +7,33 @@ export default function Navigation() {
   const pathname = usePathname();
 
   return (
-    <nav className="bg-gray-800 border-b border-gray-700 mb-8">
+    <nav className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 mb-8">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-2">
             <span className="text-2xl">📈</span>
-            <span className="text-white font-bold text-xl">Stock Analysis</span>
+            <span className="text-gray-900 dark:text-white font-bold text-xl">Stock Analysis</span>
           </div>
           <div className="flex space-x-4">
             <Link
               href="/"
               className={`px-4 py-2 rounded-lg font-semibold transition-all ${
                 pathname === '/'
-                  ? 'bg-white text-gray-900'
-                  : 'text-gray-300 hover:bg-gray-700'
+                  ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
+                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
               Dashboard
             </Link>
             <Link
-              href="/pipeline"
+              href="/multi-stock"
               className={`px-4 py-2 rounded-lg font-semibold transition-all ${
-                pathname === '/pipeline'
-                  ? 'bg-white text-gray-900'
-                  : 'text-gray-300 hover:bg-gray-700'
+                pathname === '/multi-stock'
+                  ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
+                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
-              Pipeline Control
+              Multi-Stock AI
             </Link>
           </div>
         </div>

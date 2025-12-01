@@ -1,7 +1,3 @@
-"""
-Multi-Stock LightGBM Model
-Fast gradient boosting model for all stocks - trains in 2-5 minutes
-"""
 
 import pandas as pd
 import numpy as np
@@ -313,17 +309,7 @@ class MultiStockLightGBM:
         return self.model
     
     def predict(self, symbol: str, df: pd.DataFrame, days: int = 30) -> Dict:
-        """
-        Predict future prices for a stock
         
-        Args:
-            symbol: Stock symbol
-            df: Historical stock data
-            days: Number of days to predict
-            
-        Returns:
-            Dictionary with predictions
-        """
         if self.model is None:
             raise ValueError("Model not trained. Call train() first.")
         

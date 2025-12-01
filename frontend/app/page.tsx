@@ -52,7 +52,7 @@ export default function Home() {
           const info = await infoRes.json();
           setDataInfo(info);
           if (!info.csv_fresh && info.days_old > 7) {
-            showMessage(`📊 Data is ${info.days_old} days old. Auto-fetching fresh data...`, 'success');
+            showMessage(` Data is ${info.days_old} days old. Auto-fetching fresh data...`, 'success');
           }
         }
       } catch (e) {
@@ -76,9 +76,9 @@ export default function Home() {
       setChartData(stockData);
       
       const dataSource = analysis.data_source || 'CSV data';
-      showMessage(`✅ Analysis complete! ${dataSource}`, 'success');
+      showMessage(` Analysis complete! ${dataSource}`, 'success');
     } catch (error) {
-      showMessage('❌ Analysis failed. Please try again.', 'error');
+      showMessage('Analysis failed. Please try again.', 'error');
       console.error('Analysis error:', error);
     } finally {
       setLoading(false);
@@ -87,14 +87,14 @@ export default function Home() {
 
   const fetchLiveData = async () => {
     if (!selectedStock) {
-      showMessage('Please select a stock first', 'error');
+      showMessage(' Please select a stock first', 'error');
       return;
     }
 
     setLoading(true);
+    setMessage({ text: ' Fetching live data from YFinance...', type: 'success' });
+    
     try {
-      showMessage('🔄 Fetching live data from YFinance...', 'success');
-      
       // Use force_update=true to trigger YFinance fetch
       const response = await fetch(`${API_BASE}/data/${selectedStock}?limit=100&force_update=true`);
       
@@ -127,7 +127,7 @@ export default function Home() {
 
   const generatePrediction = async () => {
     if (!selectedStock) {
-      showMessage('Please select a stock first', 'error');
+      showMessage('⚠️ Please select a stock first', 'error');
       return;
     }
 
@@ -135,12 +135,12 @@ export default function Home() {
     try {
       // First ensure we have fresh data analyzed
       if (!analysisData) {
-        showMessage('Please analyze the stock first', 'error');
+        showMessage('⚠️ Please analyze the stock first', 'error');
         setLoading(false);
         return;
       }
 
-      showMessage('🔮 Generating predictions...', 'success');
+      setMessage({ text: ' Generating predictions...', type: 'success' });
       
       const response = await fetch(`${API_BASE}/predict`, {
         method: 'POST',
@@ -168,13 +168,17 @@ export default function Home() {
   };
 
   return (
-    <div className="py-8">
+    <div>
       {/* Message */}
       {message && (
-        <div className={`rounded-xl p-4 mb-6 max-w-4xl mx-auto ${
-          message.type === 'success' ? 'bg-green-900/50 text-green-300 border border-green-700' : 'bg-red-900/50 text-red-300 border border-red-700'
+        <div className={`rounded-xl p-4 mb-6 shadow-sm border-2 ${
+          message.type === 'success' 
+            ? 'bg-white dark:bg-gray-900 text-green-600 dark:text-green-400 border-green-500 dark:border-green-600' 
+            : 'bg-white dark:bg-gray-900 text-red-600 dark:text-red-400 border-red-500 dark:border-red-600'
         }`}>
-          {message.text}
+          <div className="font-medium">
+            {message.text}
+          </div>
         </div>
       )}
 
@@ -190,28 +194,28 @@ export default function Home() {
 
       {/* Preprocessing Logs Button */}
       {selectedStock && (
-        <div className="max-w-4xl mx-auto mb-6 flex justify-center">
+        <div className="mb-6 flex justify-center">
           <PreprocessingLogs symbol={selectedStock} apiBase={API_BASE} />
         </div>
       )}
 
       {/* Data Info Badge */}
       {dataInfo && selectedStock && (
-        <div className="max-w-4xl mx-auto mb-6">
-          <div className={`rounded-xl p-4 border ${
+        <div className="mb-6">
+          <div className={`rounded-xl p-4 border-2 shadow-sm ${
             dataInfo.csv_fresh 
-              ? 'bg-green-900/20 border-green-700 text-green-300' 
-              : 'bg-yellow-900/20 border-yellow-700 text-yellow-300'
+              ? 'bg-white dark:bg-gray-900 border-green-500 dark:border-green-600 text-green-600 dark:text-green-400' 
+              : 'bg-white dark:bg-gray-900 border-yellow-500 dark:border-yellow-600 text-yellow-600 dark:text-yellow-400'
           }`}>
             <div className="flex items-center justify-between">
-              <div>
-                <span className="font-semibold">Data Status: </span>
+              <div className="font-medium">
+                <span className="font-bold">Data Status: </span>
                 {dataInfo.csv_fresh ? '✅ Fresh' : '⚠️ Outdated'}
-                <span className="ml-3 text-sm">
+                <span className="ml-3 text-sm opacity-90">
                   Last Update: {dataInfo.last_date}
                 </span>
               </div>
-              <div className="text-sm">
+              <div className="text-sm font-medium opacity-90">
                 Age: {dataInfo.days_old} days
                 {!dataInfo.csv_fresh && ' (Auto-updated from YFinance)'}
               </div>
@@ -224,7 +228,7 @@ export default function Home() {
       {loading && (
         <div className="text-center py-12">
           <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
-          <p className="text-gray-300 text-xl mt-4 font-semibold">Loading...</p>
+          <p className="text-gray-800 dark:text-gray-300 text-xl mt-4 font-semibold">Loading...</p>
         </div>
       )}
 

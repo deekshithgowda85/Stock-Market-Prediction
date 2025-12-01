@@ -50,11 +50,11 @@ export default function PreprocessingLogs({ symbol, apiBase }: PreprocessingLogs
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'success': return 'text-green-400';
-      case 'error': return 'text-red-400';
-      case 'running': return 'text-yellow-400';
-      case 'info': return 'text-blue-400';
-      default: return 'text-gray-400';
+      case 'success': return 'text-green-600 dark:text-green-400';
+      case 'error': return 'text-red-600 dark:text-red-400';
+      case 'running': return 'text-yellow-600 dark:text-yellow-400';
+      case 'info': return 'text-blue-600 dark:text-blue-400';
+      default: return 'text-gray-600 dark:text-gray-400';
     }
   };
 
@@ -74,7 +74,7 @@ export default function PreprocessingLogs({ symbol, apiBase }: PreprocessingLogs
       <button
         onClick={fetchLogs}
         disabled={!symbol || loading}
-        className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+        className="px-4 py-2 bg-gray-900 text-white dark:bg-white dark:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg font-medium transition-colors shadow-sm flex items-center gap-2"
       >
         <span>📊</span>
         <span>{loading ? 'Loading...' : 'View Preprocessing Logs'}</span>
@@ -83,16 +83,16 @@ export default function PreprocessingLogs({ symbol, apiBase }: PreprocessingLogs
       {/* Logs Modal */}
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-800 rounded-lg w-full max-w-4xl max-h-[90vh] flex flex-col">
+          <div className="bg-[hsl(var(--card))] rounded-lg w-full max-w-4xl max-h-[90vh] flex flex-col">
             {/* Header */}
-            <div className="p-6 border-b border-gray-700 flex justify-between items-center">
+            <div className="p-6 border-b border-[hsl(var(--border))] flex justify-between items-center">
               <div>
-                <h2 className="text-2xl font-bold text-white">Preprocessing Pipeline Logs</h2>
-                <p className="text-gray-400 mt-1">Stock: {symbol}</p>
+                <h2 className="text-2xl font-bold text-[hsl(var(--card-foreground))]">Preprocessing Pipeline Logs</h2>
+                <p className="text-[hsl(var(--muted-foreground))] mt-1">Stock: {symbol}</p>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-gray-400 hover:text-white text-2xl"
+                className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] text-2xl"
               >
                 ×
               </button>
@@ -100,27 +100,27 @@ export default function PreprocessingLogs({ symbol, apiBase }: PreprocessingLogs
 
             {/* Summary */}
             {summary && (
-              <div className="p-4 bg-gray-900 border-b border-gray-700">
+              <div className="p-4 bg-[hsl(var(--muted))] border-b border-[hsl(var(--border))]">
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
                   <div>
-                    <div className="text-gray-400">Initial Rows</div>
-                    <div className="text-white font-bold">{summary.initial_rows}</div>
+                    <div className="text-[hsl(var(--muted-foreground))]">Initial Rows</div>
+                    <div className="text-[hsl(var(--foreground))] font-bold">{summary.initial_rows}</div>
                   </div>
                   <div>
-                    <div className="text-gray-400">Final Rows</div>
-                    <div className="text-white font-bold">{summary.final_rows}</div>
+                    <div className="text-[hsl(var(--muted-foreground))]">Final Rows</div>
+                    <div className="text-[hsl(var(--foreground))] font-bold">{summary.final_rows}</div>
                   </div>
                   <div>
-                    <div className="text-gray-400">Initial Columns</div>
-                    <div className="text-white font-bold">{summary.initial_columns}</div>
+                    <div className="text-[hsl(var(--muted-foreground))]">Initial Columns</div>
+                    <div className="text-[hsl(var(--foreground))] font-bold">{summary.initial_columns}</div>
                   </div>
                   <div>
-                    <div className="text-gray-400">Final Columns</div>
-                    <div className="text-white font-bold">{summary.final_columns}</div>
+                    <div className="text-[hsl(var(--muted-foreground))]">Final Columns</div>
+                    <div className="text-[hsl(var(--foreground))] font-bold">{summary.final_columns}</div>
                   </div>
                   <div>
-                    <div className="text-gray-400">Features Added</div>
-                    <div className="text-green-400 font-bold">+{summary.features_added}</div>
+                    <div className="text-[hsl(var(--muted-foreground))]">Features Added</div>
+                    <div className="text-green-600 font-bold">+{summary.features_added}</div>
                   </div>
                 </div>
               </div>
@@ -129,14 +129,14 @@ export default function PreprocessingLogs({ symbol, apiBase }: PreprocessingLogs
             {/* Logs Content */}
             <div className="flex-1 overflow-y-auto p-6 space-y-4">
               {logs.length === 0 ? (
-                <div className="text-center text-gray-400 py-8">
+                <div className="text-center text-[hsl(var(--muted-foreground))] py-8">
                   {loading ? 'Loading logs...' : 'No logs available'}
                 </div>
               ) : (
                 logs.map((log, index) => (
                   <div
                     key={index}
-                    className="bg-gray-900 rounded-lg p-4 border border-gray-700"
+                    className="bg-[hsl(var(--muted))] rounded-lg p-4 border border-[hsl(var(--border))]"
                   >
                     <div className="flex items-start gap-3">
                       <span className={`text-xl ${getStatusColor(log.status)}`}>
@@ -144,23 +144,23 @@ export default function PreprocessingLogs({ symbol, apiBase }: PreprocessingLogs
                       </span>
                       <div className="flex-1">
                         <div className="flex items-center justify-between">
-                          <h3 className="font-semibold text-white">{log.step}</h3>
-                          <span className="text-xs text-gray-500">
+                          <h3 className="font-semibold text-[hsl(var(--foreground))]">{log.step}</h3>
+                          <span className="text-xs text-[hsl(var(--muted-foreground))]">
                             {new Date(log.timestamp).toLocaleTimeString()}
                           </span>
                         </div>
-                        <p className="text-gray-300 mt-1">{log.message}</p>
+                        <p className="text-[hsl(var(--card-foreground))] mt-1">{log.message}</p>
                         
                         {/* Additional Data */}
                         {log.data && Object.keys(log.data).length > 0 && (
-                          <div className="mt-3 bg-gray-800 rounded p-3 text-sm">
+                          <div className="mt-3 bg-[hsl(var(--background))] rounded p-3 text-sm border border-[hsl(var(--border))]">
                             <div className="grid grid-cols-2 gap-2">
                               {Object.entries(log.data).map(([key, value]) => {
                                 if (typeof value === 'object') return null;
                                 return (
                                   <div key={key} className="flex justify-between">
-                                    <span className="text-gray-400">{key}:</span>
-                                    <span className="text-white font-mono">
+                                    <span className="text-[hsl(var(--muted-foreground))]">{key}:</span>
+                                    <span className="text-[hsl(var(--foreground))] font-mono">
                                       {typeof value === 'number' ? value.toLocaleString() : String(value)}
                                     </span>
                                   </div>
@@ -177,10 +177,10 @@ export default function PreprocessingLogs({ symbol, apiBase }: PreprocessingLogs
             </div>
 
             {/* Footer */}
-            <div className="p-4 border-t border-gray-700 flex justify-end">
+            <div className="p-4 border-t border-[hsl(var(--border))] flex justify-end">
               <button
                 onClick={() => setIsOpen(false)}
-                className="px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+                className="px-6 py-2 bg-gray-900 text-white dark:bg-white dark:text-gray-900 hover:opacity-90 rounded-lg transition-colors"
               >
                 Close
               </button>

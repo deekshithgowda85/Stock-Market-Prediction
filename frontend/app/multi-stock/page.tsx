@@ -176,52 +176,52 @@ export default function MultiStockPrediction() {
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
             Multi-Stock Market Analysis
           </h1>
-          <p className="text-gray-400">
+          <p className="text-[hsl(var(--muted-foreground))]">
             AI-powered market insights trained on {modelInfo ? formatLargeNumber(modelInfo.total_samples) : '2.3+ Lakh'} samples
           </p>
         </div>
 
         {/* Overall Model Performance */}
-        <div className="bg-gradient-to-r from-blue-900/30 to-purple-900/30 border border-blue-700 rounded-lg p-6">
-          <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-6">
+          <h2 className="text-2xl font-bold text-[hsl(var(--foreground))] mb-4 flex items-center gap-2">
             🏆 Overall Model Performance
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            <div className="bg-gray-800/50 rounded-lg p-4">
-              <div className="text-sm text-gray-400 mb-1">Dataset Size</div>
-              <div className="text-3xl font-bold text-blue-400">{modelInfo ? formatLargeNumber(modelInfo.total_samples) : '2.33 Lakh'}</div>
-              <div className="text-xs text-gray-500 mt-1">{modelInfo?.num_stocks || 49} stocks</div>
+            <div className="bg-[hsl(var(--card))] rounded-lg p-4 border border-[hsl(var(--border))]">
+              <div className="text-sm text-[hsl(var(--muted-foreground))] mb-1">Dataset Size</div>
+              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{modelInfo ? formatLargeNumber(modelInfo.total_samples) : '2.33 Lakh'}</div>
+              <div className="text-xs text-[hsl(var(--muted-foreground))] mt-1">{modelInfo?.num_stocks || 49} stocks</div>
             </div>
-            <div className="bg-gray-800/50 rounded-lg p-4">
-              <div className="text-sm text-gray-400 mb-1">Training Speed</div>
-              <div className="text-3xl font-bold text-green-400">{modelInfo?.training_time || '1.66'}s</div>
-              <div className="text-xs text-gray-500 mt-1">2000x faster than LSTM</div>
+            <div className="bg-[hsl(var(--card))] rounded-lg p-4 border border-[hsl(var(--border))]">
+              <div className="text-sm text-[hsl(var(--muted-foreground))] mb-1">Training Speed</div>
+              <div className="text-3xl font-bold text-green-600 dark:text-green-400">{modelInfo?.training_time || '1.66'}s</div>
+              <div className="text-xs text-[hsl(var(--muted-foreground))] mt-1">2000x faster than LSTM</div>
             </div>
-            <div className="bg-gray-800/50 rounded-lg p-4">
-              <div className="text-sm text-gray-400 mb-1">Test RMSE</div>
-              <div className="text-3xl font-bold text-purple-400">{modelInfo?.test_rmse.toFixed(2) || '191.59'}</div>
-              <div className="text-xs text-gray-500 mt-1">Root Mean Squared Error</div>
+            <div className="bg-[hsl(var(--card))] rounded-lg p-4 border border-[hsl(var(--border))]">
+              <div className="text-sm text-[hsl(var(--muted-foreground))] mb-1">Test RMSE</div>
+              <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">{modelInfo?.test_rmse.toFixed(2) || '191.59'}</div>
+              <div className="text-xs text-[hsl(var(--muted-foreground))] mt-1">Root Mean Squared Error</div>
             </div>
-            <div className="bg-gray-800/50 rounded-lg p-4">
-              <div className="text-sm text-gray-400 mb-1">Test MAE</div>
-              <div className="text-3xl font-bold text-orange-400">{modelInfo?.test_mae.toFixed(2) || '31.97'}</div>
-              <div className="text-xs text-gray-500 mt-1">Mean Absolute Error</div>
+            <div className="bg-[hsl(var(--card))] rounded-lg p-4 border border-[hsl(var(--border))]">
+              <div className="text-sm text-[hsl(var(--muted-foreground))] mb-1">Test MAE</div>
+              <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">{modelInfo?.test_mae.toFixed(2) || '31.97'}</div>
+              <div className="text-xs text-[hsl(var(--muted-foreground))] mt-1">Mean Absolute Error</div>
             </div>
-            <div className="bg-gray-800/50 rounded-lg p-4">
-              <div className="text-sm text-gray-400 mb-1">Features</div>
-              <div className="text-3xl font-bold text-yellow-400">{modelInfo?.features.length || 32}</div>
-              <div className="text-xs text-gray-500 mt-1">Technical indicators</div>
+            <div className="bg-[hsl(var(--card))] rounded-lg p-4 border border-[hsl(var(--border))]">
+              <div className="text-sm text-[hsl(var(--muted-foreground))] mb-1">Features</div>
+              <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">{modelInfo?.features.length || 32}</div>
+              <div className="text-xs text-[hsl(var(--muted-foreground))] mt-1">Technical indicators</div>
             </div>
           </div>
           <div className="mt-4 flex gap-4 text-sm flex-wrap">
-            <div className="flex items-center gap-2 text-gray-300">
+            <div className="flex items-center gap-2 text-[hsl(var(--foreground))]">
               <span className="w-2 h-2 bg-green-500 rounded-full"></span>
               <span>Model Type: LightGBM Gradient Boosting</span>
             </div>
-            <div className="flex items-center gap-2 text-gray-300">
+            <div className="flex items-center gap-2 text-[hsl(var(--foreground))]">
               <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
               <span>Accuracy: {((1 - (modelInfo?.test_mae || 31.97) / 2000) * 100).toFixed(2)}% on average price</span>
             </div>
@@ -229,35 +229,35 @@ export default function MultiStockPrediction() {
         </div>
 
         {/* Market Analysis Control */}
-        <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
-          <h2 className="text-xl font-bold text-white mb-4">📊 Analyze Market Patterns</h2>
-          <p className="text-gray-400 text-sm mb-4">Get AI-powered insights across top 20 NIFTY50 stocks</p>
+        <div className="bg-[hsl(var(--card))] border border-[hsl(var(--border))] rounded-lg p-6">
+          <h2 className="text-xl font-bold text-[hsl(var(--foreground))] mb-4">📊 Analyze Market Patterns</h2>
+          <p className="text-[hsl(var(--muted-foreground))] text-sm mb-4">Get AI-powered insights across top 20 NIFTY50 stocks</p>
           
           <div className="flex gap-4 items-end">
             <div className="flex-1">
-              <label className="text-sm font-medium text-gray-300 mb-2 block">Forecast Horizon (Days)</label>
+              <label className="text-sm font-medium text-[hsl(var(--foreground))] mb-2 block">Forecast Horizon (Days)</label>
               <input
                 type="number"
                 min="1"
                 max="90"
                 value={forecastDays}
                 onChange={(e) => setForecastDays(Number(e.target.value))}
-                className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                className="w-full px-4 py-2 bg-[hsl(var(--background))] border border-[hsl(var(--border))] rounded-lg text-[hsl(var(--foreground))] focus:outline-none focus:border-blue-500"
               />
             </div>
             <button
               onClick={analyzeMarket}
               disabled={loading}
-              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white font-medium rounded-lg transition-colors"
+              className="px-6 py-2 bg-gray-900 text-white dark:bg-white dark:text-gray-900 font-medium rounded-lg transition-colors disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:text-gray-500 dark:disabled:text-gray-400"
             >
               {loading ? 'Analyzing...' : 'Analyze Market'}
             </button>
           </div>
 
           {error && (
-            <div className="mt-4 flex items-center gap-2 p-3 bg-red-900/30 border border-red-700 rounded-lg">
-              <span className="text-red-400">⚠️</span>
-              <span className="text-sm text-red-300">{error}</span>
+            <div className="mt-4 flex items-center gap-2 p-3 bg-white dark:bg-gray-900 border-2 border-red-500 dark:border-red-600 rounded-lg">
+              <span className="text-red-600 dark:text-red-400">⚠️</span>
+              <span className="text-sm text-red-600 dark:text-red-400">{error}</span>
             </div>
           )}
         </div>
@@ -266,24 +266,24 @@ export default function MultiStockPrediction() {
         {marketAnalysis && (
           <>
             {/* Market Sentiment */}
-            <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
-              <h3 className="text-xl font-bold text-white mb-4">📈 Market Sentiment ({forecastDays} Days)</h3>
+            <div className="bg-[hsl(var(--card))] border border-[hsl(var(--border))] rounded-lg p-6">
+              <h3 className="text-xl font-bold text-[hsl(var(--foreground))] mb-4">📈 Market Sentiment ({forecastDays} Days)</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className={`p-4 rounded-lg border-2 ${marketAnalysis.overall_sentiment === 'Bullish' ? 'bg-green-900/30 border-green-500' : 'bg-red-900/30 border-red-500'}`}>
-                  <div className="text-sm text-gray-300">Overall Sentiment</div>
-                  <div className="text-3xl font-bold mt-2">
+                <div className={`p-4 rounded-lg border-2 ${marketAnalysis.overall_sentiment === 'Bullish' ? 'bg-green-100 dark:bg-green-900/30 border-green-500' : 'bg-red-100 dark:bg-red-900/30 border-red-500'}`}>
+                  <div className="text-sm text-[hsl(var(--foreground))] opacity-80">Overall Sentiment</div>
+                  <div className="text-3xl font-bold mt-2 text-[hsl(var(--foreground))]">
                     {marketAnalysis.overall_sentiment === 'Bullish' ? '🐂 Bullish' : '🐻 Bearish'}
                   </div>
                 </div>
-                <div className="bg-green-900/30 border-2 border-green-700 p-4 rounded-lg">
-                  <div className="text-sm text-gray-300">Bullish Stocks</div>
-                  <div className="text-3xl font-bold text-green-400 mt-2">{marketAnalysis.bullish_stocks}</div>
-                  <div className="text-xs text-gray-400 mt-1">Expected to rise</div>
+                <div className="bg-green-100 dark:bg-green-900/30 border-2 border-green-500 dark:border-green-700 p-4 rounded-lg">
+                  <div className="text-sm text-[hsl(var(--foreground))] opacity-80">Bullish Stocks</div>
+                  <div className="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{marketAnalysis.bullish_stocks}</div>
+                  <div className="text-xs text-[hsl(var(--muted-foreground))] mt-1">Expected to rise</div>
                 </div>
-                <div className="bg-red-900/30 border-2 border-red-700 p-4 rounded-lg">
-                  <div className="text-sm text-gray-300">Bearish Stocks</div>
-                  <div className="text-3xl font-bold text-red-400 mt-2">{marketAnalysis.bearish_stocks}</div>
-                  <div className="text-xs text-gray-400 mt-1">Expected to fall</div>
+                <div className="bg-red-100 dark:bg-red-900/30 border-2 border-red-500 dark:border-red-700 p-4 rounded-lg">
+                  <div className="text-sm text-[hsl(var(--foreground))] opacity-80">Bearish Stocks</div>
+                  <div className="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">{marketAnalysis.bearish_stocks}</div>
+                  <div className="text-xs text-[hsl(var(--muted-foreground))] mt-1">Expected to fall</div>
                 </div>
               </div>
             </div>
@@ -291,25 +291,25 @@ export default function MultiStockPrediction() {
             {/* Top Gainers & Losers */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Top Gainers */}
-              <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+              <div className="bg-[hsl(var(--card))] border border-[hsl(var(--border))] rounded-lg p-6">
+                <h3 className="text-xl font-bold text-[hsl(var(--foreground))] mb-4 flex items-center gap-2">
                   🚀 Top 5 Expected Gainers
                 </h3>
                 <div className="space-y-3">
                   {marketAnalysis.top_gainers.map((stock, idx) => (
-                    <div key={stock.symbol} className="flex items-center justify-between p-3 bg-green-900/20 border border-green-700/50 rounded-lg">
+                    <div key={stock.symbol} className="flex items-center justify-between p-3 bg-green-100 dark:bg-green-900/20 border border-green-300 dark:border-green-700/50 rounded-lg">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-bold">
                           {idx + 1}
                         </div>
                         <div>
-                          <div className="font-bold text-white">{stock.symbol}</div>
-                          <div className="text-xs text-gray-400">Predicted: {formatNumber(stock.predicted_price)}</div>
+                          <div className="font-bold text-[hsl(var(--foreground))]">{stock.symbol}</div>
+                          <div className="text-xs text-[hsl(var(--muted-foreground))]">Predicted: {formatNumber(stock.predicted_price)}</div>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-green-400 font-bold">+{stock.change.toFixed(2)}%</div>
-                        <div className="text-xs text-gray-400">growth</div>
+                        <div className="text-green-600 dark:text-green-400 font-bold">+{stock.change.toFixed(2)}%</div>
+                        <div className="text-xs text-[hsl(var(--muted-foreground))]">growth</div>
                       </div>
                     </div>
                   ))}
@@ -317,25 +317,25 @@ export default function MultiStockPrediction() {
               </div>
 
               {/* Top Losers */}
-              <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+              <div className="bg-[hsl(var(--card))] border border-[hsl(var(--border))] rounded-lg p-6">
+                <h3 className="text-xl font-bold text-[hsl(var(--foreground))] mb-4 flex items-center gap-2">
                   📉 Top 5 Expected Losers
                 </h3>
                 <div className="space-y-3">
                   {marketAnalysis.top_losers.map((stock, idx) => (
-                    <div key={stock.symbol} className="flex items-center justify-between p-3 bg-red-900/20 border border-red-700/50 rounded-lg">
+                    <div key={stock.symbol} className="flex items-center justify-between p-3 bg-red-100 dark:bg-red-900/20 border border-red-300 dark:border-red-700/50 rounded-lg">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white font-bold">
                           {idx + 1}
                         </div>
                         <div>
-                          <div className="font-bold text-white">{stock.symbol}</div>
-                          <div className="text-xs text-gray-400">Predicted: {formatNumber(stock.predicted_price)}</div>
+                          <div className="font-bold text-[hsl(var(--foreground))]">{stock.symbol}</div>
+                          <div className="text-xs text-[hsl(var(--muted-foreground))]">Predicted: {formatNumber(stock.predicted_price)}</div>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-red-400 font-bold">{stock.change.toFixed(2)}%</div>
-                        <div className="text-xs text-gray-400">decline</div>
+                        <div className="text-red-600 dark:text-red-400 font-bold">{stock.change.toFixed(2)}%</div>
+                        <div className="text-xs text-[hsl(var(--muted-foreground))]">decline</div>
                       </div>
                     </div>
                   ))}
@@ -344,21 +344,21 @@ export default function MultiStockPrediction() {
             </div>
 
             {/* Sector Performance */}
-            <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
-              <h3 className="text-xl font-bold text-white mb-4">🏢 Sector Performance</h3>
+            <div className="bg-[hsl(var(--card))] border border-[hsl(var(--border))] rounded-lg p-6">
+              <h3 className="text-xl font-bold text-[hsl(var(--foreground))] mb-4">🏢 Sector Performance</h3>
               <div className="space-y-4">
                 {marketAnalysis.sector_performance.filter(s => s.stocks > 0).map((sector) => (
                   <div key={sector.sector} className="space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-white">{sector.sector}</span>
-                        <span className="text-xs text-gray-400">({sector.stocks} stocks)</span>
+                        <span className="font-bold text-[hsl(var(--foreground))]">{sector.sector}</span>
+                        <span className="text-xs text-[hsl(var(--muted-foreground))]">({sector.stocks} stocks)</span>
                       </div>
-                      <span className={`font-bold ${sector.avg_change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                      <span className={`font-bold ${sector.avg_change >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                         {sector.avg_change >= 0 ? '+' : ''}{sector.avg_change.toFixed(2)}%
                       </span>
                     </div>
-                    <div className="w-full bg-gray-700 rounded-full h-2">
+                    <div className="w-full bg-[hsl(var(--muted))] rounded-full h-2">
                       <div 
                         className={`h-2 rounded-full ${sector.avg_change >= 0 ? 'bg-green-500' : 'bg-red-500'}`}
                         style={{ width: `${Math.min(Math.abs(sector.avg_change) * 10, 100)}%` }}
@@ -373,14 +373,14 @@ export default function MultiStockPrediction() {
 
         {/* Feature Importance */}
         {modelInfo && (
-          <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
-            <h3 className="text-xl font-bold text-white mb-4">🎯 Top 10 Most Important Features</h3>
-            <p className="text-gray-400 text-sm mb-4">Features that contribute most to prediction accuracy</p>
+          <div className="bg-[hsl(var(--card))] border border-[hsl(var(--border))] rounded-lg p-6">
+            <h3 className="text-xl font-bold text-[hsl(var(--foreground))] mb-4">🎯 Top 10 Most Important Features</h3>
+            <p className="text-[hsl(var(--muted-foreground))] text-sm mb-4">Features that contribute most to prediction accuracy</p>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
               {modelInfo.features.slice(0, 10).map((feature, idx) => (
-                <div key={feature} className="bg-gray-700 rounded-lg p-3 text-center">
-                  <div className="text-xs text-gray-400 mb-1">#{idx + 1}</div>
-                  <div className="text-sm font-medium text-white">{feature}</div>
+                <div key={feature} className="bg-[hsl(var(--background))] rounded-lg p-3 text-center border border-[hsl(var(--border))]">
+                  <div className="text-xs text-[hsl(var(--muted-foreground))] mb-1">#{idx + 1}</div>
+                  <div className="text-sm font-medium text-[hsl(var(--foreground))]">{feature}</div>
                 </div>
               ))}
             </div>

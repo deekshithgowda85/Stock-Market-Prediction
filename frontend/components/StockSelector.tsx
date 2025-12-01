@@ -16,17 +16,17 @@ export default function StockSelector({
   loading
 }: StockSelectorProps) {
   return (
-    <div className="bg-gray-800 rounded-xl shadow-lg p-4 mb-6 border border-gray-700">
+    <div className="bg-[hsl(var(--card))] rounded-xl shadow-md p-6 mb-6 border border-[hsl(var(--border))]">
       <div className="flex flex-wrap items-end gap-3">
         {/* Stock Selector */}
         <div className="flex-1 min-w-[200px]">
-          <label className="block text-xs font-semibold text-gray-300 mb-1.5">
+          <label className="block text-xs font-semibold text-[hsl(var(--card-foreground))] mb-1.5">
             Select Stock
           </label>
           <select
             value={selectedStock}
             onChange={(e) => onAnalyze(e.target.value)}
-            className="w-full px-3 py-2 text-sm bg-gray-700 text-white border border-gray-600 rounded-lg focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all"
+            className="w-full px-3 py-2 text-sm bg-[hsl(var(--background))] text-[hsl(var(--foreground))] border border-[hsl(var(--border))] rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all"
             disabled={loading}
           >
             <option value="">-- Choose Stock --</option>
@@ -42,7 +42,7 @@ export default function StockSelector({
         <button
           onClick={() => selectedStock && onAnalyze(selectedStock)}
           disabled={!selectedStock || loading}
-          className="px-5 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm border border-blue-700"
+          className="px-5 py-2 text-sm bg-gray-900 text-white dark:bg-white dark:text-gray-900 rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
         >
           Analyze
         </button>
@@ -52,7 +52,7 @@ export default function StockSelector({
           <button
             onClick={onFetchLive}
             disabled={!selectedStock || loading}
-            className="w-full bg-transparent border-2 border-emerald-500 text-emerald-400 px-6 py-3 rounded-xl font-semibold hover:bg-emerald-600 hover:text-white transform hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gray-900 text-white dark:bg-white dark:text-gray-900 px-6 py-2 rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
           >
             Fetch Live Data
           </button>
@@ -63,7 +63,7 @@ export default function StockSelector({
           <button
             onClick={onPredict}
             disabled={!selectedStock || loading}
-            className="w-full bg-transparent border-2 border-purple-500 text-purple-400 px-6 py-3 rounded-xl font-semibold hover:bg-purple-600 hover:text-white transform hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gray-900 text-white dark:bg-white dark:text-gray-900 px-6 py-2 rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
           >
             Predict
           </button>

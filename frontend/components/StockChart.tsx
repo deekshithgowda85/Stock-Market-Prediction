@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
@@ -12,6 +12,20 @@ interface StockChartProps {
 export default function StockChart({ data }: StockChartProps) {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstance = useRef<Chart | null>(null);
+  const [isDark, setIsDark] = useState(false);
+
+  // Detect theme changes
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
+    
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!chartRef.current || !data || !data.data || data.data.length === 0) {
@@ -47,6 +61,11 @@ export default function StockChart({ data }: StockChartProps) {
       priceRange: [Math.min(...prices), Math.max(...prices)] 
     });
 
+    // Theme-aware colors
+    const textColor = isDark ? '#e5e7eb' : '#374151';
+    const gridColor = isDark ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.5)';
+    const titleColor = isDark ? '#f3f4f6' : '#111827';
+
     chartInstance.current = new Chart(ctx, {
       type: 'line',
       data: {
@@ -73,7 +92,7 @@ export default function StockChart({ data }: StockChartProps) {
             display: true,
             position: 'top',
             labels: {
-              color: '#e5e7eb',
+              color: textColor,
               font: {
                 size: 14,
                 weight: 'bold',
@@ -83,7 +102,7 @@ export default function StockChart({ data }: StockChartProps) {
           title: {
             display: true,
             text: `${data.symbol} Price History (Last ${data.data.length} days)`,
-            color: '#f3f4f6',
+            color: titleColor,
             font: {
               size: 18,
               weight: 'bold',
@@ -104,10 +123,10 @@ export default function StockChart({ data }: StockChartProps) {
           y: {
             beginAtZero: false,
             grid: {
-              color: 'rgba(75, 85, 99, 0.3)',
+              color: gridColor,
             },
             ticks: {
-              color: '#9ca3af',
+              color: textColor,
               callback: function (value) {
                 return '₹' + value;
               },
@@ -115,10 +134,10 @@ export default function StockChart({ data }: StockChartProps) {
           },
           x: {
             grid: {
-              color: 'rgba(75, 85, 99, 0.3)',
+              color: gridColor,
             },
             ticks: {
-              color: '#9ca3af',
+              color: textColor,
               maxTicksLimit: 10,
             },
           },
@@ -136,10 +155,10 @@ export default function StockChart({ data }: StockChartProps) {
         chartInstance.current.destroy();
       }
     };
-  }, [data]);
+  }, [data, isDark]);
 
   return (
-    <div className="bg-gray-800 rounded-2xl shadow-2xl p-6 mb-8 border border-gray-700">
+    <div className="bg-[hsl(var(--card))] rounded-2xl shadow-lg p-6 mb-8 border border-[hsl(var(--border))]">
       <div className="h-96">
         <canvas ref={chartRef}></canvas>
       </div>
