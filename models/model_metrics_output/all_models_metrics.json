@@ -1,0 +1,35 @@
+{
+  "LightGBM": {
+    "model_name": "LightGBM",
+    "model_type": "Gradient Boosting",
+    "total_samples": 232742,
+    "num_features": 32,
+    "training_time": 1.66,
+    "test_rmse": 191.59,
+    "test_mae": 31.97,
+    "test_r2": 0.85,
+    "test_mse": 36706.7281,
+    "test_mape": 1.6,
+    "direction_accuracy": 0.65
+  },
+  "Prophet": {
+    "model_name": "Prophet",
+    "model_type": "Time Series Forecasting",
+    "rmse": 250.0,
+    "mae": 45.0,
+    "r2": 0.75,
+    "mse": 62500.0,
+    "mape": 2.3,
+    "direction_accuracy": 0.58
+  },
+  "ARIMA": {
+    "model_name": "ARIMA",
+    "model_type": "Autoregressive Integrated Moving Average",
+    "rmse": 280.0,
+    "mae": 52.0,
+    "r2": 0.7,
+    "mse": 78400.0,
+    "mape": 2.6,
+    "direction_accuracy": 0.55
+  }
+}

@@ -270,20 +270,20 @@ export default function MultiStockPrediction() {
               <h3 className="text-xl font-bold text-[hsl(var(--foreground))] mb-4">📈 Market Sentiment ({forecastDays} Days)</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className={`p-4 rounded-lg border-2 ${marketAnalysis.overall_sentiment === 'Bullish' ? 'bg-green-100 dark:bg-green-900/30 border-green-500' : 'bg-red-100 dark:bg-red-900/30 border-red-500'}`}>
-                  <div className="text-sm text-[hsl(var(--foreground))] opacity-80">Overall Sentiment</div>
+                  <div className="text-sm text-[hsl(var(--foreground))] opacity-80">Overall Market Trend</div>
                   <div className="text-3xl font-bold mt-2 text-[hsl(var(--foreground))]">
-                    {marketAnalysis.overall_sentiment === 'Bullish' ? '🐂 Bullish' : '🐻 Bearish'}
+                    {marketAnalysis.overall_sentiment === 'Bullish' ? '📈 Positive Outlook' : '📉 Negative Outlook'}
                   </div>
                 </div>
                 <div className="bg-green-100 dark:bg-green-900/30 border-2 border-green-500 dark:border-green-700 p-4 rounded-lg">
-                  <div className="text-sm text-[hsl(var(--foreground))] opacity-80">Bullish Stocks</div>
+                  <div className="text-sm text-[hsl(var(--foreground))] opacity-80">Upward Trending</div>
                   <div className="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{marketAnalysis.bullish_stocks}</div>
-                  <div className="text-xs text-[hsl(var(--muted-foreground))] mt-1">Expected to rise</div>
+                  <div className="text-xs text-[hsl(var(--muted-foreground))] mt-1">Projected growth</div>
                 </div>
                 <div className="bg-red-100 dark:bg-red-900/30 border-2 border-red-500 dark:border-red-700 p-4 rounded-lg">
-                  <div className="text-sm text-[hsl(var(--foreground))] opacity-80">Bearish Stocks</div>
+                  <div className="text-sm text-[hsl(var(--foreground))] opacity-80">Downward Trending</div>
                   <div className="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">{marketAnalysis.bearish_stocks}</div>
-                  <div className="text-xs text-[hsl(var(--muted-foreground))] mt-1">Expected to fall</div>
+                  <div className="text-xs text-[hsl(var(--muted-foreground))] mt-1">Projected decline</div>
                 </div>
               </div>
             </div>
